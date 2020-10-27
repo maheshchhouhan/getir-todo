@@ -1,4 +1,7 @@
-# Installation Commands
+## Deployed to firebase
+https://todo-getir.web.app/
+
+## Installation Commands
 ### `git clone https://github.com/maheshchhouhan/getir-todo.git`
 ### `cd getir-todo && npm install && npm start`
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
