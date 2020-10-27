@@ -59,10 +59,16 @@ const TodoInput = () => {
         } else {
           // updating todo
           reduxDispatch(
-            updateTodo({ ...todo, ...state }, () => {
-              handleTodoPopup();
-              NotificationManager.success('Todo updated successfully', 'Todo');
-            })
+            updateTodo(
+              { ...todo, ...state, isCompleted: todo.isCompleted },
+              () => {
+                handleTodoPopup();
+                NotificationManager.success(
+                  'Todo updated successfully',
+                  'Todo'
+                );
+              }
+            )
           );
         }
       }
