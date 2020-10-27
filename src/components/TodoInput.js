@@ -14,7 +14,7 @@ import 'react-notifications/lib/notifications.css';
 import useForm from '../hooks/useForm';
 
 // importing TodoActions
-import { addTodo, updateTodo } from '../redux/actions/TodoAction';
+import { addTodo, updateTodo, resetTodo } from '../redux/actions/TodoAction';
 
 const initState = {
   text: '',
@@ -32,8 +32,10 @@ const TodoInput = () => {
 
   const [show, setShow] = useState(false);
 
+  // to handle popup state
   const handleTodoPopup = () => setShow(!show);
 
+  // to handle form validation
   const handleValidate = () => {
     return new Promise((resolve, reject) => {
       if (text.trim() !== '') resolve(1);
@@ -41,12 +43,13 @@ const TodoInput = () => {
     });
   };
 
+  // to handle todo add / update
   const handleSubmit = async (isUpdate) => {
     try {
       const isValidated = await handleValidate();
       if (isValidated) {
         if (!isUpdate) {
-          // adding new
+          // adding new todo
           reduxDispatch(
             addTodo({ ...state }, () => {
               handleTodoPopup();
@@ -54,11 +57,9 @@ const TodoInput = () => {
             })
           );
         } else {
-          const _todo = { ...todo };
-          _todo.text = text;
-          _todo.deadlineDate = deadlineDate;
+          // updating todo
           reduxDispatch(
-            updateTodo({ ..._todo }, () => {
+            updateTodo({ ...todo, ...state }, () => {
               handleTodoPopup();
               NotificationManager.success('Todo updated successfully', 'Todo');
             })
@@ -71,16 +72,19 @@ const TodoInput = () => {
   };
 
   useEffect(() => {
+    // checking if popup is closing then resetting form values
     if (!show) {
       dispatch({
         type: 'SET_MULTIPLE_STATE',
         payload: { text: '', deadlineDate: new Date() },
       });
+      reduxDispatch(resetTodo());
     }
-  }, [show, dispatch]);
+  }, [show, dispatch, reduxDispatch]);
 
   useEffect(() => {
-    if (editPopup && todo) {
+    // on edit popuplating data to form input's
+    if (editPopup && todo.text) {
       handleTodoPopup();
       const { text, deadlineDate } = todo;
       dispatch({
@@ -137,13 +141,13 @@ const TodoInput = () => {
           <Button variant='secondary' onClick={handleTodoPopup}>
             Close
           </Button>
-          {!todo.text ? (
-            <Button variant='success' onClick={() => handleSubmit(0)}>
-              Add
-            </Button>
-          ) : (
+          {todo.text && text ? (
             <Button variant='success' onClick={() => handleSubmit(1)}>
               Update
+            </Button>
+          ) : (
+            <Button variant='success' onClick={() => handleSubmit(0)}>
+              Add
             </Button>
           )}
         </Modal.Footer>

@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { NotificationManager } from 'react-notifications';
 import Button from 'react-bootstrap/Button';
 import Moment from 'react-moment';
+// importing todo redux actions
 import { updateTodo, deleteTodo, editTodo } from '../redux/actions/TodoAction';
 
 const TodoItem = ({ todo }) => {
@@ -10,6 +11,7 @@ const TodoItem = ({ todo }) => {
 
   const reduxDispatch = useDispatch();
 
+  // to handle delete todo
   const handleDelete = (todoId) => {
     const confirmation = window.confirm(
       'Do you really want to delete this todo?'
@@ -22,6 +24,7 @@ const TodoItem = ({ todo }) => {
       );
   };
 
+  // to handle complete / un-complete todo
   const handleComplete = (todo) => {
     todo.isCompleted = !todo.isCompleted;
     reduxDispatch(
@@ -36,6 +39,7 @@ const TodoItem = ({ todo }) => {
     );
   };
 
+  // to handle populae edit data
   const handleEdit = (todoId) => {
     reduxDispatch(editTodo(todoId));
   };

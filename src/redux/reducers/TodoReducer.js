@@ -4,6 +4,7 @@ import {
   UPDATE_TODO,
   EDIT_TODO,
   TODO_LOADING,
+  RESET_TODO,
 } from '../types';
 
 const initState = {
@@ -47,6 +48,11 @@ const TodoReducer = (state = initState, action) => {
         ...state,
         todo: action.payload,
         editPopup: true,
+      };
+    case RESET_TODO:
+      return {
+        ...state,
+        todo: {},
       };
     default:
       return state;

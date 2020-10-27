@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import { useSelector, useDispatch } from 'react-redux';
+// import redux todo actions
 import { getTodos } from './../redux/actions/TodoAction';
 
 const TodoList = () => {
@@ -15,6 +16,7 @@ const TodoList = () => {
     reduxDispatch(getTodos());
   }, [reduxDispatch]);
 
+  // to handle filter options and populating data accordingly
   const handleFilter = ({ target: { value: isCompleted } }) => {
     if (isCompleted !== '') {
       reduxDispatch(getTodos(isCompleted));

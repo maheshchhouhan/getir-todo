@@ -1,4 +1,10 @@
-import { GET_TODO, DELETE_TODO, TODO_LOADING, EDIT_TODO } from '../types';
+import {
+  GET_TODO,
+  DELETE_TODO,
+  TODO_LOADING,
+  EDIT_TODO,
+  RESET_TODO,
+} from '../types';
 import { firebase } from '../../firebase';
 
 export const getTodos = (isCompleted) => async (dispatch) => {
@@ -43,7 +49,7 @@ export const editTodo = (todoId) => async (dispatch) => {
 
   dispatch({
     type: EDIT_TODO,
-    payload: snapshot.data(),
+    payload: { ...snapshot.data(), todoId },
   });
 };
 
@@ -63,6 +69,7 @@ export const addTodo = (todo, cb) => async (dispatch) => {
 
 export const updateTodo = (todo, cb) => async (dispatch) => {
   const { todoId } = todo;
+  console.log({ todo });
   await firebase
     .firestore()
     .collection('todos')
@@ -81,4 +88,10 @@ export const deleteTodo = (todoId, cb) => async (dispatch) => {
     payload: { todoId },
   });
   cb();
+};
+
+export const resetTodo = () => {
+  return {
+    type: RESET_TODO,
+  };
 };
